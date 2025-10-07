@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Status Dashboard</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    .status-box {
+      display: inline-block;
+      padding: 40px 80px;
+      border-radius: 20px;
+      font-size: 2em;
+      font-weight: bold;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .down {
+      background: #d32f2f;
+      color: white;
+    }
+
+    .risk {
+      background: #fbc02d;
+      color: black;
+    }
+
+    .good {
+      background: #388e3c;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Service Status</h1>
+  <div id="status" class="status-box">Loading...</div>
+
+  <script>
+    async function updateStatus() {
+      try {
+        const res = await fetch("/status.json?_=" + Date.now());
+        const data = await res.json();
+        const box = document.getElementById("status");
+
+        box.textContent = data.statusText;
+        box.className = "status-box " + data.status;
+      } catch {
+        console.error("Failed to fetch status.json");
+      }
+    }
+
+    setInterval(updateStatus, 3000);
+    updateStatus();
+  </script>
+</body>
+</html>

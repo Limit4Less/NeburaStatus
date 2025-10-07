@@ -1,0 +1,10 @@
+{
+  "name": "status-dashboard",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "type": "module",
+  "dependencies": {
+    "discord.js": "^14.15.2",
+    "express": "^4.21.2"
+  }
+}
