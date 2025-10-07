@@ -2,7 +2,7 @@ import fs from "fs";
 import express from "express";
 import { Client, GatewayIntentBits, REST, Routes } from "discord.js";
 
-// Load secrets from environment variables
+// Load environment variables
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const PORT = process.env.PORT || 3000;
@@ -80,6 +80,13 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 client.on("interactionCreate", async interaction => {
   if (!interaction.isChatInputCommand()) return;
   if (interaction.commandName !== "status") return;
+
+  const allowedUserId = "1340703645355999293"; // Only this user can use commands
+
+  if (interaction.user.id !== allowedUserId) {
+    await interaction.reply({ content: "❌ You are not authorized to use this command.", ephemeral: true });
+    return;
+  }
 
   // Create status.json if missing
   if (!fs.existsSync("status.json")) {
